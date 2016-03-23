@@ -15,10 +15,14 @@ object Project1 {
 		exit(1)	
 	}
 
+	val N = 100 // Number of partitions
+
 	val tasknr = args(2)
 
 	val customers = spark.textFile(args(0) + "/customer.tbl").map(x => x.split('|'))
 	val orders = spark.textFile(args(0) + "/orders.tbl").map(x => x.split('|'))
+
+	// val customes_transformed = customers.cartesian(spark.parallelize(i <- 0 to N))
 
 	val regex = ".*special.*requests.*".r
 
@@ -26,7 +30,8 @@ object Project1 {
 							.map(order => (order(1), 1)).reduceByKey(_ + _)
 
 	val simpleCustomers = customers.map(customer => (customer(0),customer(0)))
-	val customerOrders = simpleCustomers.leftOuterJoin(orderCount)
+
+	val customerOrders = simpleCustomers.join(orderCount)
 
 	val orderCustomers = customerOrders.map(x => (x._2._2, x._2._1))
 
@@ -34,10 +39,7 @@ object Project1 {
 
 	val result = orderCountCustomers.sortByKey()
 
-	val cleanResult = result.map({
-		case (Some(a:Int), b) => List(a, b).mkString("|")
-		case (_, b) => List(0, b).mkString("|")
-	})
+	val cleanResult = result.map(el => List(el).mkString("|"))
 
 	cleanResult.collect.foreach(println)
 	
