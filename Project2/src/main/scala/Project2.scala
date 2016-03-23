@@ -6,7 +6,7 @@ import org.apache.spark.SparkConf
 object Project2 {
   def main(args: Array[String]) {
 
-    val conf = new SparkConf().setAppName("MartinHallenProject1")
+    val conf = new SparkConf().setAppName("MartinHallenProject2")
 
     val spark = new SparkContext(conf)
 
