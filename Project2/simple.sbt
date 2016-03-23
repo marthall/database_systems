@@ -1,8 +1,8 @@
-name := "Project1"
+name := "Project2"
 
 version := "1.0"
 
-artifactName := ((sv: ScalaVersion, module: ModuleID, artifact: Artifact) => "Project1.jar")
+artifactName := ((sv: ScalaVersion, module: ModuleID, artifact: Artifact) => "Project2.jar")
 
 scalaVersion := "2.10.4"
 
